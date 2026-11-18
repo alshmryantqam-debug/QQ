@@ -37,13 +37,19 @@ jobs:
           flutter create --org com.nova.routermanager --project-name nova_router_manager --platforms=android .
           mv pubspec.yaml.bak pubspec.yaml
 
-      - name: Configure Android Permissions (Internet & Cleartext Traffic for MikroTik)
+      - name: Configure Android Permissions & Disable Lint Check
         run: |
           MANIFEST="android/app/src/main/AndroidManifest.xml"
           if ! grep -q "android.permission.INTERNET" "$MANIFEST"; then
             sed -i 's/<application/<uses-permission android:name="android.permission.INTERNET"\/>\n    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"\/>\n    <application android:usesCleartextTraffic="true"/g' "$MANIFEST"
           fi
           sed -i 's/android:label="nova_router_manager"/android:label="NOVA Router Manager"/g' "$MANIFEST"
+          
+          # تعطيل فحص Lint لوضع الإصدار لتجنب خطأ webview_flutter_android
+          GRADLE_FILE="android/app/build.gradle"
+          if ! grep -q "lintOptions" "$GRADLE_FILE"; then
+            sed -i '/android {/a \    lintOptions {\n        checkReleaseBuilds false\n        abortOnError false\n    }' "$GRADLE_FILE"
+          fi
 
       - name: Install Flutter Dependencies
         run: flutter pub get
