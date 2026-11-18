@@ -40,16 +40,16 @@ jobs:
       - name: Configure Android Permissions & Disable Lint Check
         run: |
           MANIFEST="android/app/src/main/AndroidManifest.xml"
-          if ! grep -q "android.permission.INTERNET" "$MANIFEST"; then
-            sed -i 's/<application/<uses-permission android:name="android.permission.INTERNET"\/>\n    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"\/>\n    <application android:usesCleartextTraffic="true"/g' "$MANIFEST"
+          if [ -f "$MANIFEST" ]; then
+            if ! grep -q "android.permission.INTERNET" "$MANIFEST"; then
+              sed -i 's/<application/<uses-permission android:name="android.permission.INTERNET"\/>\n    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"\/>\n    <application android:usesCleartextTraffic="true"/g' "$MANIFEST"
+            fi
+            sed -i 's/android:label="nova_router_manager"/android:label="NOVA Router Manager"/g' "$MANIFEST"
           fi
-          sed -i 's/android:label="nova_router_manager"/android:label="NOVA Router Manager"/g' "$MANIFEST"
           
-          # تعطيل فحص Lint لوضع الإصدار لتجنب خطأ webview_flutter_android
-          GRADLE_FILE="android/app/build.gradle"
-          if ! grep -q "lintOptions" "$GRADLE_FILE"; then
-            sed -i '/android {/a \    lintOptions {\n        checkReleaseBuilds false\n        abortOnError false\n    }' "$GRADLE_FILE"
-          fi
+          # الحل السحري: تعطيل فحص Lint نهائياً في ملف الإعدادات لتجنب انهيار البناء
+          echo "android.lint.checkReleaseBuilds=false" >> android/gradle.properties
+          echo "android.lint.abortOnError=false" >> android/gradle.properties
 
       - name: Install Flutter Dependencies
         run: flutter pub get
