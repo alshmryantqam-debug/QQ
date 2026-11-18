@@ -2,9 +2,9 @@ name: Build NOVA Router Manager APK
 
 on:
   push:
-    branches: [ "main", "master" ]
+    branches: ["main", "master"]
   pull_request:
-    branches: [ "main", "master" ]
+    branches: ["main", "master"]
   workflow_dispatch:
 
 permissions:
@@ -19,16 +19,23 @@ jobs:
       - name: Checkout Repository
         uses: actions/checkout@v4
 
-      - name: Set up JDK 17
+      # Android Lint bundled with the generated Android Gradle Plugin calls
+      # Java 21 collection APIs (List.removeLast). JDK 17 causes NoSuchMethodError.
+      - name: Set up JDK 21
         uses: actions/setup-java@v4
         with:
-          distribution: 'temurin'
-          java-version: '17'
+          distribution: temurin
+          java-version: "21"
+
+      - name: Verify Java Toolchain
+        run: |
+          java -version
+          echo "JAVA_HOME=$JAVA_HOME"
 
       - name: Set up Flutter Stable
         uses: subosito/flutter-action@v2
         with:
-          channel: 'stable'
+          channel: stable
           cache: true
 
       - name: Generate Android Platform Scaffolding
@@ -37,7 +44,7 @@ jobs:
           flutter create --org com.nova.routermanager --project-name nova_router_manager --platforms=android .
           mv pubspec.yaml.bak pubspec.yaml
 
-      - name: Configure Android Permissions & Disable Lint Check
+      - name: Configure Android Permissions
         run: |
           MANIFEST="android/app/src/main/AndroidManifest.xml"
           if [ -f "$MANIFEST" ]; then
@@ -46,19 +53,17 @@ jobs:
             fi
             sed -i 's/android:label="nova_router_manager"/android:label="NOVA Router Manager"/g' "$MANIFEST"
           fi
-          
-          # الحل السحري: تعطيل فحص Lint نهائياً في ملف الإعدادات لتجنب انهيار البناء
-          echo "android.lint.checkReleaseBuilds=false" >> android/gradle.properties
-          echo "android.lint.abortOnError=false" >> android/gradle.properties
 
       - name: Install Flutter Dependencies
         run: flutter pub get
 
-      - name: Build Release APK (Split & Universal)
+      - name: Build Release APK (Universal)
         run: flutter build apk --release --no-tree-shake-icons
 
-      - name: Rename APK for Easy Download
+      - name: Verify APK Output
         run: |
+          test -s build/app/outputs/flutter-apk/app-release.apk
+          ls -lh build/app/outputs/flutter-apk/app-release.apk
           cp build/app/outputs/flutter-apk/app-release.apk NOVA-Router-Manager-Pro.apk
 
       - name: Upload APK to GitHub Actions Artifacts
@@ -75,8 +80,7 @@ jobs:
           tag_name: v3.0.${{ github.run_number }}
           name: "NOVA Router Manager Pro v3.0 (Build #${{ github.run_number }})"
           body: |
-            ### ⚡ تطبيق NOVA Router Manager Pro - نسخة أندرويد جاهزة للتثبيت
-            - مطابق 100% للتصميم الأصلي بجميع الشاشات والبوابات الفرعية.
-            - يدعم الاتصال الحقيقي المباشر براوتر **MikroTik (RouterOS v6 / v7)** عبر بروتوكول **API Port 8728** و **REST API**.
-            - قم بتحميل ملف `NOVA-Router-Manager-Pro.apk` بالأسفل وتثبيته مباشرة على هاتفك.
+            ### NOVA Router Manager Pro - Android APK
+            - Universal release APK.
+            - Supports MikroTik RouterOS v6 / v7.
           files: NOVA-Router-Manager-Pro.apk
