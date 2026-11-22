@@ -2301,7 +2301,7 @@ function navigateToPortal(portalId) {
     item.classList.toggle('active', !!match && Number(match[1]) === id);
   });
   const modal = document.getElementById('subPortalModal');
-  if (modal) modal.classList.remove('active');
+  if (modal) { modal.classList.remove('open'); modal.setAttribute('aria-hidden', 'true'); }
   const flash = document.getElementById('portalWarpFlash');
   if (flash) {
     flash.classList.remove('active');
@@ -2324,7 +2324,7 @@ function openSubPortal(title, html) {
   }
   titleEl.textContent = title || 'تفاصيل';
   bodyEl.innerHTML = html || '';
-  modal.classList.add('active');
+  modal.classList.add('open');
   modal.setAttribute('aria-hidden', 'false');
   bodyEl.scrollTop = 0;
 }
@@ -2332,7 +2332,7 @@ function openSubPortal(title, html) {
 function closeSubPortal() {
   const modal = document.getElementById('subPortalModal');
   if (!modal) return;
-  modal.classList.remove('active');
+  modal.classList.remove('open');
   modal.setAttribute('aria-hidden', 'true');
 }
 
