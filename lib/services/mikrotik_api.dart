@@ -73,6 +73,11 @@ class MikroTikApiClient {
         return true;
       }
       isConnected = false;
+      if (loginRes.isNotEmpty) {
+        lastError = loginRes.first['message'] ?? 'رفض الراوتر تسجيل الدخول؛ تحقق من اسم المستخدم وكلمة المرور وصلاحيات API';
+      } else if (lastError.isEmpty) {
+        lastError = 'لم يصل رد من الراوتر أثناء تسجيل الدخول';
+      }
       return false;
     } catch (e) {
       lastError = e.toString();
@@ -100,7 +105,14 @@ class MikroTikApiClient {
     try {
       _writeSentence(words);
       return await _PendingCommand!.future.timeout(timeout, onTimeout: () {
-        return List<Map<String, String>>.from(_currentRows);
+        lastError = 'انتهت مهلة تنفيذ أمر الراوتر بعد ' + timeout.inSeconds.toString() + ' ثوانٍ';
+        final timeoutRows = <Map<String, String>>[
+          {'!status': 'error', 'message': lastError}
+        ];
+        if (_PendingCommand != null && !_PendingCommand!.isCompleted) {
+          _PendingCommand!.complete(timeoutRows);
+        }
+        return timeoutRows;
       });
     } catch (e) {
       lastError = e.toString();
@@ -176,6 +188,7 @@ class MikroTikApiClient {
         }
       } else if (tag == '!trap' || tag == '!fatal') {
         row['!status'] = 'trap';
+        lastError = row['message'] ?? row['category'] ?? 'رفض الراوتر تنفيذ الأمر';
         _currentRows.add(row);
         if (_PendingCommand != null && !_PendingCommand!.isCompleted) {
           _PendingCommand!.complete(List<Map<String, String>>.from(_currentRows));
