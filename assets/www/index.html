@@ -2284,6 +2284,58 @@ html, body {
    Zero Fake Data | Separate PPPoE & Hotspot Portals | Real Live Telemetry
    ========================================================================== */
 
+/* CORE NAVIGATION — required by every dashboard and bottom-nav control */
+function navigateToPortal(portalId) {
+  const id = Number(portalId);
+  if (!Number.isInteger(id) || id < 0 || id > 6) return;
+  NovaState.currentPortal = id;
+  document.querySelectorAll('.portal-page').forEach(page => {
+    page.classList.toggle('active', page.id === 'portal-' + id);
+  });
+  document.querySelectorAll('[data-portal]').forEach(item => {
+    item.classList.toggle('active', Number(item.getAttribute('data-portal')) === id);
+  });
+  document.querySelectorAll('.bottom-nav .nav-item').forEach(item => {
+    const action = item.getAttribute('onclick') || '';
+    const match = action.match(/navigateToPortal\\((\\d+)\\)/);
+    item.classList.toggle('active', !!match && Number(match[1]) === id);
+  });
+  const modal = document.getElementById('subPortalModal');
+  if (modal) modal.classList.remove('active');
+  const flash = document.getElementById('portalWarpFlash');
+  if (flash) {
+    flash.classList.remove('active');
+    void flash.offsetWidth;
+    flash.classList.add('active');
+  }
+  window.scrollTo(0, 0);
+  if (id === 2) renderPPPoEPortal();
+  if (id === 3) renderHotspotPortal();
+  if (id === 5 && NovaState.routerConfig.connected) switchMonitoringTab(2);
+}
+
+function openSubPortal(title, html) {
+  const modal = document.getElementById('subPortalModal');
+  const titleEl = document.getElementById('subPortalTitle');
+  const bodyEl = document.getElementById('subPortalBody');
+  if (!modal || !titleEl || !bodyEl) {
+    console.error('NOVA: sub portal elements are missing');
+    return;
+  }
+  titleEl.textContent = title || 'تفاصيل';
+  bodyEl.innerHTML = html || '';
+  modal.classList.add('active');
+  modal.setAttribute('aria-hidden', 'false');
+  bodyEl.scrollTop = 0;
+}
+
+function closeSubPortal() {
+  const modal = document.getElementById('subPortalModal');
+  if (!modal) return;
+  modal.classList.remove('active');
+  modal.setAttribute('aria-hidden', 'true');
+}
+
 const NovaState = {
   currentPortal: 0, // 0:Home, 1:NetworkMap, 2:PPPoE, 3:Hotspot, 4:Tools, 5:Monitoring, 6:Settings
   pppoeTab: 'secrets', // secrets | active | profiles
