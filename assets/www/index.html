@@ -2307,6 +2307,7 @@ function navigateToPortal(portalId) {
     flash.classList.remove('active');
     void flash.offsetWidth;
     flash.classList.add('active');
+    window.setTimeout(() => flash.classList.remove('active'), 360);
   }
   window.scrollTo(0, 0);
   if (id === 2) renderPPPoEPortal();
