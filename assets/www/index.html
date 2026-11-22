@@ -1422,6 +1422,198 @@ html, body {
 .bottom-nav.six-cols .nav-item {
   font-size: 9.8px;
 }
+
+/* ==========================================================================
+   NOVA DESIGN PASS — reference-matched mobile glass / neon system
+   Scoped to the actual WebView entry document.
+   ========================================================================== */
+:root {
+  --bg-deep:#020612;
+  --phone-bg:#030918;
+  --card-bg:rgba(7,19,43,.88);
+  --card-bg-dark:rgba(3,10,27,.96);
+  --cyan:#16dfff;
+  --cyan-soft:#5deaff;
+  --blue-neon:#087cff;
+  --purple-neon:#a64cff;
+  --magenta-neon:#d84cff;
+  --green-neon:#20ee9b;
+  --amber-neon:#ffad43;
+  --red-neon:#ff5274;
+  --text-white:#f4f8ff;
+  --text-dim:#9bb1d2;
+}
+html,body {
+  background:#020611;
+  overscroll-behavior:none;
+}
+.app-device-shell {
+  background:
+    radial-gradient(ellipse at 50% 20%,rgba(0,111,255,.16),transparent 42%),
+    radial-gradient(ellipse at 8% 75%,rgba(104,31,255,.12),transparent 38%),
+    linear-gradient(180deg,#030817 0%,#020611 58%,#030a1b 100%);
+}
+.app-device-shell::after {
+  content:"";
+  position:absolute; inset:0; pointer-events:none; z-index:2;
+  opacity:.22;
+  background:linear-gradient(135deg,transparent 0 38%,rgba(0,205,255,.07) 50%,transparent 62%);
+}
+.status-bar,.portals-stage { z-index:10; }
+.portal-page {
+  padding:5px 15px 12px;
+  justify-content:flex-start;
+  gap:8px;
+  overflow-y:auto;
+  overscroll-behavior:contain;
+  -webkit-overflow-scrolling:touch;
+  transform:translate3d(24px,0,-30px) scale(.985);
+}
+.portal-page.active { transform:translate3d(0,0,0) scale(1); }
+.app-header {
+  min-height:42px;
+  padding:2px 2px 5px;
+  margin-bottom:1px;
+}
+.header-title { font-size:18px; letter-spacing:.1px; }
+.icon-btn {
+  width:39px;height:39px;border-radius:13px;
+  background:linear-gradient(145deg,rgba(0,194,255,.13),rgba(8,20,48,.8));
+  border-color:rgba(36,211,255,.42);
+  box-shadow:inset 0 0 12px rgba(0,195,255,.08),0 5px 16px rgba(0,0,0,.22);
+}
+.nova-word { font-size:34px; letter-spacing:3.5px; }
+.connected-pill {
+  min-height:31px;
+  padding:5px 15px;
+  border-radius:999px;
+  box-shadow:0 0 20px rgba(0,230,118,.25),inset 0 0 12px rgba(0,230,118,.12);
+}
+.router-hero-stage {
+  height:clamp(142px,22vh,188px);
+  min-height:142px;
+  margin:0 0 2px;
+  border-radius:22px;
+  background:radial-gradient(ellipse at 50% 72%,rgba(0,179,255,.12),transparent 65%);
+}
+.router-hero-stage svg { max-width:100%; height:100%; }
+.metrics-row-4 { gap:7px; margin:0 0 2px; }
+.metric-card {
+  min-height:91px;
+  border-radius:17px;
+  padding:10px 4px 8px;
+  background:linear-gradient(160deg,rgba(13,30,65,.94),rgba(3,10,27,.98));
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.06),0 7px 18px rgba(0,0,0,.2);
+}
+.metric-val {font-size:17px;}
+.metric-label {font-size:11px;}
+.traffic-now-card,.provider-card,.net-health-card,.chart-box-analytics,
+.active-users-bar-card,.setting-row,.sub-item-card,.sub-stat-card,.tool-tile {
+  background:linear-gradient(155deg,rgba(12,29,64,.92),rgba(3,10,27,.97));
+  backdrop-filter:blur(12px);
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.055),0 8px 20px rgba(0,0,0,.22);
+}
+.traffic-now-card {
+  border-radius:19px;
+  padding:10px 13px 2px;
+  margin:0;
+}
+.traffic-title {font-size:13px;margin-bottom:6px;}
+.speed-big .num-green,.speed-big .num-cyan {font-size:20px;}
+.providers-row-3 {gap:7px;margin:0;}
+.provider-card {min-height:76px;border-radius:16px;padding:8px 5px;}
+.bottom-nav,.bottom-nav.six-cols {
+  position:sticky;
+  bottom:0;
+  z-index:45;
+  width:100%;
+  grid-template-columns:repeat(4,minmax(0,1fr));
+  gap:2px;
+  margin-top:auto;
+  padding:8px 6px max(7px,env(safe-area-inset-bottom));
+  border-radius:19px;
+  background:linear-gradient(180deg,rgba(8,20,48,.97),rgba(2,8,23,.99));
+  border:1px solid rgba(28,193,255,.46);
+  box-shadow:0 -8px 24px rgba(0,123,255,.14),inset 0 1px 0 rgba(255,255,255,.07);
+}
+.bottom-nav .nav-item:nth-child(3),
+.bottom-nav .nav-item:nth-child(6) {display:none;}
+.bottom-nav .nav-item {
+  min-height:48px;
+  justify-content:center;
+  gap:3px;
+  font-size:10px;
+  border-radius:12px;
+  padding:4px 1px;
+}
+.bottom-nav .nav-item.active {
+  background:linear-gradient(180deg,rgba(0,170,255,.18),rgba(0,80,190,.07));
+  color:#fff;
+}
+.bottom-nav .nav-item.active::after {
+  bottom:-4px;width:24px;height:2px;
+}
+.topology-stage {
+  height:clamp(330px,49vh,415px)!important;
+  margin:0 auto 4px;
+  max-width:100%;
+}
+.topology-stage svg {width:100%;height:100%;max-width:346px;display:block;margin:auto;}
+.search-box {min-height:44px;border-radius:15px;margin-bottom:2px;}
+.sub-stats-row {gap:6px;margin-bottom:2px;}
+.sub-stat-card {min-height:86px;border-radius:16px;padding:9px 3px;}
+.sub-list {gap:8px;max-height:none;overflow:visible;margin:0;}
+.sub-item-card {min-height:70px;border-radius:17px;padding:9px 10px;}
+.tools-grid-12 {
+  grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:9px;
+  margin:2px 0 4px;
+}
+.tool-tile {
+  min-height:103px;
+  border-radius:17px;
+  padding:11px 5px;
+  touch-action:manipulation;
+}
+.tool-tile svg {width:30px;height:30px;}
+.tool-eng {font-size:12px;margin-top:7px;}
+.tool-ar {font-size:10.5px;}
+.tabs-segmented {position:sticky;top:0;z-index:5;backdrop-filter:blur(12px);}
+.seg-tab {min-height:37px;display:flex;align-items:center;justify-content:center;font-size:12px;}
+.gauges-row-3 {gap:4px;}
+.settings-hero {height:clamp(125px,20vh,160px)!important;}
+.settings-list {gap:8px;margin-bottom:4px;}
+.setting-row {min-height:50px;border-radius:15px;padding:10px 12px;}
+.logout-btn {min-height:48px;}
+.sub-portal-modal {padding:calc(12px + env(safe-area-inset-top)) 14px calc(12px + env(safe-area-inset-bottom));}
+.sub-portal-modal .app-header {margin-bottom:8px;}
+.sub-portal-body {padding:0 1px 12px;}
+.login-gate-overlay {padding:calc(16px + env(safe-area-inset-top)) 14px calc(18px + env(safe-area-inset-bottom));}
+.login-gate-overlay>div {max-width:520px;margin:0 auto;width:100%;}
+.login-gate-overlay .portal-card {border-radius:18px;}
+button,.nav-item,.icon-btn,.metric-card,.provider-card,.tool-tile,.setting-row,.sub-item-card {
+  touch-action:manipulation;
+  -webkit-user-select:none;
+}
+button:active,.nav-item:active,.icon-btn:active,.metric-card:active,
+.provider-card:active,.tool-tile:active,.setting-row:active,.sub-item-card:active {
+  transform:scale(.975);
+  filter:brightness(1.18);
+}
+button:focus-visible,.nav-item:focus-visible,.icon-btn:focus-visible {
+  outline:2px solid #70efff;
+  outline-offset:2px;
+}
+@media (max-height:720px) {
+  .portal-page {gap:6px;padding-top:3px;}
+  .router-hero-stage {height:132px;min-height:132px;}
+  .metric-card {min-height:78px;padding:7px 3px;}
+  .bottom-nav .nav-item {min-height:43px;}
+}
+@media (min-width:441px) {
+  .portal-page {padding-left:18px;padding-right:18px;}
+}
+
 </style>
 </head>
 <body data-default-portal="0">
