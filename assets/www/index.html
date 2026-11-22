@@ -1866,6 +1866,105 @@ button:focus-visible,.icon-btn:focus-visible,.nav-item:focus-visible{outline:2px
  *,*::before,*::after{scroll-behavior:auto!important;animation-duration:.01ms!important;transition-duration:.01ms!important;}
 }
 
+
+/* NOVA FULL-SCREEN TOUCH LAYOUT — larger controls, less dead space */
+html,body{width:100%;height:100%;height:100dvh;overflow:hidden;}
+.app-device-shell{width:100%;max-width:none;height:100dvh;min-height:100dvh;margin:0;border-radius:0;}
+.status-bar{padding:calc(7px + env(safe-area-inset-top)) 17px 4px;min-height:29px;}
+.portals-stage{height:auto;min-height:0;flex:1 1 auto;overflow:hidden;}
+.portal-page{
+ inset:0;padding:5px 12px calc(7px + env(safe-area-inset-bottom));
+ gap:8px;justify-content:flex-start;overflow-y:auto;overscroll-behavior:contain;
+}
+.portal-page.active{transform:none;filter:none;}
+.app-header{min-height:43px;padding:0 1px 4px;}
+.router-hero-stage{height:clamp(108px,16vh,142px);min-height:108px;}
+.connected-pill{min-height:34px;padding:7px 16px;font-size:12px;}
+.metrics-row-4{gap:7px;}
+.metric-card{min-height:87px;padding:9px 4px;border-radius:17px;gap:5px;}
+.metric-card svg{width:25px;height:25px;}
+.metric-label{font-size:11px;}
+.metric-val{font-size:18px;}
+.traffic-now-card{min-height:108px;padding:10px 12px 4px;}
+.traffic-speeds .num-green,.traffic-speeds .num-cyan{font-size:21px;}
+.providers-row-3{gap:7px;}
+.provider-card{min-height:77px;padding:9px 4px;}
+.home-quick-actions{
+ display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px;
+ flex:0 0 auto;margin:0 0 2px;
+}
+.home-action{
+ min-height:68px;display:flex;align-items:center;gap:9px;
+ padding:10px 11px;border-radius:17px;text-align:right;
+ border:1px solid rgba(47,205,255,.52);
+ background:linear-gradient(145deg,rgba(9,42,85,.98),rgba(3,12,31,.99));
+ box-shadow:inset 0 1px 0 rgba(255,255,255,.12),0 8px 18px rgba(0,0,0,.35),0 0 17px rgba(0,170,255,.13);
+ color:#f3f9ff;touch-action:manipulation;
+}
+.home-action.action-purple{border-color:rgba(187,83,255,.65);box-shadow:inset 0 1px 0 rgba(255,255,255,.12),0 8px 18px rgba(0,0,0,.35),0 0 17px rgba(165,64,255,.16);}
+.home-action.action-green{border-color:rgba(39,235,160,.55);}
+.home-action.action-blue{border-color:rgba(66,130,255,.65);}
+.home-action-icon{
+ width:39px;height:39px;flex:0 0 39px;display:grid;place-items:center;
+ border-radius:13px;font-size:23px;font-weight:900;color:#5ceaff;
+ background:rgba(0,181,255,.12);border:1px solid rgba(0,207,255,.27);
+ box-shadow:inset 0 0 12px rgba(0,198,255,.12),0 0 12px rgba(0,160,255,.12);
+}
+.action-purple .home-action-icon{color:#d49aff;background:rgba(160,70,255,.14);border-color:rgba(187,83,255,.3);}
+.action-green .home-action-icon{color:#59ffc0;background:rgba(25,220,145,.12);border-color:rgba(39,235,160,.3);}
+.action-blue .home-action-icon{color:#91baff;background:rgba(70,120,255,.14);border-color:rgba(70,140,255,.3);}
+.home-action-copy{display:flex;flex-direction:column;gap:4px;min-width:0;flex:1;}
+.home-action-copy b{font-size:12px;font-weight:900;white-space:nowrap;}
+.home-action-copy small{font-size:9px;color:#9bb8da;white-space:nowrap;}
+.home-action-arrow{font-size:23px;color:#71eaff;line-height:1;}
+.bottom-nav,.bottom-nav.six-cols,.bottom-nav.four-cols{
+ position:sticky;bottom:0;z-index:40;flex:0 0 auto;
+ display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:3px;
+ margin-top:auto;padding:6px 4px calc(5px + env(safe-area-inset-bottom));
+ border-radius:17px;background:linear-gradient(180deg,rgba(7,22,51,.99),rgba(2,7,20,1));
+ border:1px solid rgba(42,192,255,.48);
+ box-shadow:0 -5px 22px rgba(0,133,255,.18),inset 0 1px rgba(255,255,255,.1);
+}
+.bottom-nav .nav-item:nth-child(4),.bottom-nav .nav-item:nth-child(6){display:none;}
+.bottom-nav .nav-item{min-width:0;min-height:54px;padding:5px 1px;gap:4px;font-size:10px;}
+.bottom-nav .nav-item svg{width:22px;height:22px;}
+.tools-grid-12{
+ display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:11px;
+ flex:0 0 auto;margin:4px 0 12px;
+}
+.tool-tile{
+ min-height:124px;padding:15px 8px 13px;border-radius:20px;
+ border-width:1.5px;
+ background:linear-gradient(145deg,rgba(10,39,82,.99) 0%,rgba(4,16,42,.99) 48%,rgba(2,9,25,1) 100%);
+ box-shadow:inset 0 1px 0 rgba(255,255,255,.13),inset 0 -12px 24px rgba(0,93,255,.08),0 10px 23px rgba(0,0,0,.42),0 0 18px rgba(0,174,255,.13);
+}
+.tool-tile svg{width:39px!important;height:39px!important;filter:drop-shadow(0 0 9px currentColor);}
+.tool-eng{font-size:14px;font-weight:900;margin-top:9px;}
+.tool-ar{font-size:12px;line-height:1.35;}
+.search-box{min-height:49px;}
+.sub-stats-row{gap:7px;}
+.sub-stat-card{min-height:94px;border-radius:18px;padding:11px 4px;}
+.sub-item-card{min-height:78px;padding:11px 12px;border-radius:18px;}
+.action-chip-row{gap:7px;flex-wrap:wrap;}
+.action-chip{min-height:42px;padding:9px 12px;font-size:12px;}
+.dual-buttons-row{gap:9px;}
+.dual-buttons-row button,.btn-neon-blue,.btn-green-neon,.btn-purple-neon,.btn-glass-dark{min-height:52px;font-size:13px;}
+.setting-row{min-height:57px;padding:12px 14px;font-size:13px;}
+.icon-btn{width:43px;height:43px;}
+@media(max-height:740px){
+ .portal-page{gap:6px;padding-top:3px;}
+ .router-hero-stage{height:96px;min-height:96px;}
+ .metric-card{min-height:76px;}
+ .traffic-now-card{min-height:92px;}
+ .home-action{min-height:61px;}
+ .bottom-nav .nav-item{min-height:48px;}
+ .tool-tile{min-height:110px;}
+}
+@media(min-width:600px){
+ .app-device-shell{max-width:560px;margin:0 auto;border-left:1px solid rgba(39,183,255,.24);border-right:1px solid rgba(39,183,255,.24);}
+ .tools-grid-12{grid-template-columns:repeat(3,minmax(0,1fr));}
+}
+
 </style>
 </head>
 <body data-default-portal="0">
@@ -2036,6 +2135,21 @@ button:focus-visible,.icon-btn:focus-visible,.nav-item:focus-visible{outline:2px
         </div>
 
         
+        <div class="home-quick-actions" aria-label="اختصارات الإدارة">
+          <button class="home-action action-cyan" onclick="navigateToPortal(2)">
+            <span class="home-action-icon">♙</span><span class="home-action-copy"><b>إدارة PPPoE</b><small>المشتركون والباقات</small></span><span class="home-action-arrow">‹</span>
+          </button>
+          <button class="home-action action-purple" onclick="navigateToPortal(3)">
+            <span class="home-action-icon">◉</span><span class="home-action-copy"><b>الهوتسبوت</b><small>الكروت والجلسات</small></span><span class="home-action-arrow">‹</span>
+          </button>
+          <button class="home-action action-blue" onclick="navigateToPortal(4)">
+            <span class="home-action-icon">⌘</span><span class="home-action-copy"><b>أدوات الشبكة</b><small>Torch · Ping · DHCP</small></span><span class="home-action-arrow">‹</span>
+          </button>
+          <button class="home-action action-green" onclick="navigateToPortal(1)">
+            <span class="home-action-icon">⌖</span><span class="home-action-copy"><b>خريطة الشبكة</b><small>الأجهزة والروابط</small></span><span class="home-action-arrow">‹</span>
+          </button>
+        </div>
+
         <div class="bottom-nav six-cols">
           <div class="nav-item active" onclick="navigateToPortal(0)">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 3L2 12h3v8h6v-6h2v6h6v-8h3L12 3z"/></svg>
