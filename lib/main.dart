@@ -76,10 +76,11 @@ class _NovaHybridMasterScreenState extends State<NovaHybridMasterScreen> {
   }
 
   Future<void> _handleNativeCommand(String rawJson) async {
+    String? reqId;
     try {
       final Map<String, dynamic> cmd = jsonDecode(rawJson);
       final String action = cmd['action'] ?? '';
-      final String? reqId = cmd['reqId'];
+      reqId = cmd['reqId'];
 
       if (action == 'CONNECT_MIKROTIK') {
         _mikrotik.host = (cmd['host'] ?? '').toString().trim();
@@ -94,7 +95,8 @@ class _NovaHybridMasterScreenState extends State<NovaHybridMasterScreen> {
           _lastTxBytes.clear();
           _lastPollTime = null;
           _startHardwarePolling();
-          await _pollOnce();
+          // Reply immediately after authentication; telemetry must not delay login.
+          unawaited(_pollOnce());
         }
         if (reqId != null) {
           _sendRpcReply(reqId, {
@@ -125,7 +127,14 @@ class _NovaHybridMasterScreenState extends State<NovaHybridMasterScreen> {
         }
       }
     } catch (e) {
-      // Safe error handling
+      if (reqId != null) {
+        _sendRpcReply(reqId!, {
+          'ok': false,
+          'mode': 'ERROR',
+          'error': e.toString(),
+          'rows': [],
+        });
+      }
     }
   }
 
